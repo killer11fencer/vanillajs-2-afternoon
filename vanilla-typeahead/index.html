@@ -78,12 +78,40 @@
         <div class="input-container">
             <input type="text">
             <ul id="list"></ul>
+            <button onclick="render();">Render</button>
         </div>
     </div>
 
 </body>
 
 <script>
+    let characters = [];
+    let list = document.getElementById('list')
+    let search = document.querySelector('input')
+    console.log(characters)
+    
+    fetch('https://swapi.co/api/people/')
+        .then(response => response.json())
+        .then(response => characters.push(...response.results))
+
+    
+function filterText() {
+    let filtered = characters
+    .filter(val => val.name.toLowerCase().includes(this.value.toLowerCase()))
+    .map(val => `<li>${val.name}</li>'`)
+
+    if(filtered.length) {
+        render(filtered)
+        }
+}
+    
+function render(array) {
+        let html = array.join('')
+        list.innerHTML = html
+        console.log('word',array)
+    }
+
+    search.addEventListener('keyup',filterText);
 </script>
 
 </html>
